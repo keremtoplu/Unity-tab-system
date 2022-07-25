@@ -1,15 +1,40 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using EasyUI.Tabs;
 
-public class TabsUIHorizontal : TabsUI
+
+public class TabsUIHorizontal : MonoBehaviour
 {
-    #if UNITY_EDITOR
-    private void Reset() {
-        OnValidate();
+    [SerializeField]
+    private List<Button> tabBtns;
+
+    [SerializeField]
+    private List<GameObject> tabContent;
+
+#if UNITY_EDITOR
+
+    private void Start()
+    {
+        for (int i = 0; i < tabBtns.Count; i++)
+        {
+            var index = i;
+            tabBtns[i].onClick.AddListener(() => OnBtnClicked(index));
+        }
     }
-    private void OnValidate() {
-        base.Validate(TabsType.Horizontal);
+    public void OnBtnClicked(int itemIndex)
+    {
+        CloseAllContent();
+        tabContent[itemIndex].SetActive(true);
+
     }
-    #endif
+
+
+    private void CloseAllContent()
+    {
+        for (int i = 0; i < tabContent.Count; i++)
+        {
+            tabContent[i].SetActive(false);
+        }
+    }
+#endif
 }
