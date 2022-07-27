@@ -11,7 +11,9 @@ public class TabsUIHorizontal : MonoBehaviour
     [SerializeField]
     private List<GameObject> tabContent;
 
-#if UNITY_EDITOR
+    private Color tabColorActive;
+
+    private Color tabColorInactive;
 
     private void Start()
     {
@@ -20,11 +22,15 @@ public class TabsUIHorizontal : MonoBehaviour
             var index = i;
             tabBtns[i].onClick.AddListener(() => OnBtnClicked(index));
         }
+        tabColorActive = tabBtns[0].GetComponent<Image>().color;
+        tabColorInactive = tabBtns[1].GetComponent<Image>().color;
     }
     public void OnBtnClicked(int itemIndex)
     {
         CloseAllContent();
         tabContent[itemIndex].SetActive(true);
+        ResetAllColor();
+        tabBtns[itemIndex].GetComponent<Image>().color = tabColorActive;
 
     }
 
@@ -36,5 +42,11 @@ public class TabsUIHorizontal : MonoBehaviour
             tabContent[i].SetActive(false);
         }
     }
-#endif
+    private void ResetAllColor()
+    {
+        for (int i = 0; i < tabBtns.Count; i++)
+        {
+            tabBtns[i].GetComponent<Image>().color = tabColorInactive;
+        }
+    }
 }
